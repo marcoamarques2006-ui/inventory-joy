@@ -45,11 +45,11 @@ export const movements: Movement[] = [
 ];
 
 export const categoryData = [
-  { name: "Componentes", value: 100, color: "var(--color-chart-1)" },
-  { name: "Periféricos", value: 75, color: "var(--color-chart-2)" },
-  { name: "Monitores", value: 17, color: "var(--color-chart-3)" },
-  { name: "Áudio", value: 15, color: "var(--color-chart-4)" },
-  { name: "Acessórios", value: 55, color: "var(--color-chart-5)" },
+  { name: "Componentes", value: 100, color: "#3b5bdb" },
+  { name: "Periféricos", value: 75, color: "#2f9e6e" },
+  { name: "Monitores", value: 17, color: "#e8a13a" },
+  { name: "Áudio", value: 15, color: "#e05252" },
+  { name: "Acessórios", value: 55, color: "#9b5de5" },
 ];
 
 export const weeklyFlow = [
