@@ -9,104 +9,133 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as MovimentacoesRouteImport } from './routes/movimentacoes'
-import { Route as ProdutosRouteImport } from './routes/produtos'
-import { Route as RelatoriosRouteImport } from './routes/relatorios'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppMovimentacoesRouteImport } from './routes/_app.movimentacoes'
+import { Route as AppProdutosRouteImport } from './routes/_app.produtos'
+import { Route as AppRelatoriosRouteImport } from './routes/_app.relatorios'
 
-const IndexRoute = IndexRouteImport.update({
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
 } as any)
-const MovimentacoesRoute = MovimentacoesRouteImport.update({
+const AppMovimentacoesRoute = AppMovimentacoesRouteImport.update({
   id: '/movimentacoes',
   path: '/movimentacoes',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
 } as any)
-const ProdutosRoute = ProdutosRouteImport.update({
+const AppProdutosRoute = AppProdutosRouteImport.update({
   id: '/produtos',
   path: '/produtos',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
 } as any)
-const RelatoriosRoute = RelatoriosRouteImport.update({
+const AppRelatoriosRoute = AppRelatoriosRouteImport.update({
   id: '/relatorios',
   path: '/relatorios',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/movimentacoes': typeof MovimentacoesRoute
-  '/produtos': typeof ProdutosRoute
-  '/relatorios': typeof RelatoriosRoute
+  '/': typeof AppIndexRoute
+  '/movimentacoes': typeof AppMovimentacoesRoute
+  '/produtos': typeof AppProdutosRoute
+  '/relatorios': typeof AppRelatoriosRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/movimentacoes': typeof MovimentacoesRoute
-  '/produtos': typeof ProdutosRoute
-  '/relatorios': typeof RelatoriosRoute
+  '/movimentacoes': typeof AppMovimentacoesRoute
+  '/produtos': typeof AppProdutosRoute
+  '/relatorios': typeof AppRelatoriosRoute
+  '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/movimentacoes': typeof MovimentacoesRoute
-  '/produtos': typeof ProdutosRoute
-  '/relatorios': typeof RelatoriosRoute
+  '/_app': typeof AppRouteWithChildren
+  '/_app/movimentacoes': typeof AppMovimentacoesRoute
+  '/_app/produtos': typeof AppProdutosRoute
+  '/_app/relatorios': typeof AppRelatoriosRoute
+  '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '/movimentacoes' | '/produtos' | '/relatorios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/movimentacoes' | '/produtos' | '/relatorios'
-  id: '__root__' | '/' | '/movimentacoes' | '/produtos' | '/relatorios'
+  to: '/movimentacoes' | '/produtos' | '/relatorios' | '/'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/_app/movimentacoes'
+    | '/_app/produtos'
+    | '/_app/relatorios'
+    | '/_app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  MovimentacoesRoute: typeof MovimentacoesRoute
-  ProdutosRoute: typeof ProdutosRoute
-  RelatoriosRoute: typeof RelatoriosRoute
+  AppRoute: typeof AppRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/': {
+      id: '/_app/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/movimentacoes': {
-      id: '/movimentacoes'
+    '/_app/movimentacoes': {
+      id: '/_app/movimentacoes'
       path: '/movimentacoes'
       fullPath: '/movimentacoes'
-      preLoaderRoute: typeof MovimentacoesRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppMovimentacoesRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/produtos': {
-      id: '/produtos'
+    '/_app/produtos': {
+      id: '/_app/produtos'
       path: '/produtos'
       fullPath: '/produtos'
-      preLoaderRoute: typeof ProdutosRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppProdutosRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/relatorios': {
-      id: '/relatorios'
+    '/_app/relatorios': {
+      id: '/_app/relatorios'
       path: '/relatorios'
       fullPath: '/relatorios'
-      preLoaderRoute: typeof RelatoriosRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppRelatoriosRouteImport
+      parentRoute: typeof AppRoute
     }
   }
 }
 
+interface AppRouteChildren {
+  AppMovimentacoesRoute: typeof AppMovimentacoesRoute
+  AppProdutosRoute: typeof AppProdutosRoute
+  AppRelatoriosRoute: typeof AppRelatoriosRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppMovimentacoesRoute: AppMovimentacoesRoute,
+  AppProdutosRoute: AppProdutosRoute,
+  AppRelatoriosRoute: AppRelatoriosRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  MovimentacoesRoute: MovimentacoesRoute,
-  ProdutosRoute: ProdutosRoute,
-  RelatoriosRoute: RelatoriosRoute,
+  AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
