@@ -105,17 +105,8 @@ function Dashboard() {
         <div className="rounded-xl border border-border bg-card p-5 shadow-xs xl:col-span-2">
           <h2 className="font-semibold tracking-tight">Estoque por categoria</h2>
           <p className="text-xs text-muted-foreground">Distribuição de itens</p>
-          <div className="mt-2 h-56">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={categoryData} dataKey="value" nameKey="name" innerRadius={55} outerRadius={85} paddingAngle={3} strokeWidth={0}>
-                  {categoryData.map((c) => (
-                    <Cell key={c.name} fill={c.color} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid var(--color-border)", background: "var(--color-card)" }} />
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="mt-2 flex h-56 items-center justify-center">
+            <Donut />
           </div>
           <ul className="mt-1 space-y-1.5">
             {categoryData.map((c) => (
