@@ -5,7 +5,7 @@ import { products, brl } from "@/lib/stock-data";
 import { StockBadge } from "@/components/stock-badge";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/produtos")({
+export const Route = createFileRoute("/_app/produtos")({
   head: () => ({
     meta: [
       { title: "Produtos — StockFlow" },

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDownToLine, ArrowUpFromLine, ArrowLeftRight } from "lucide-react";
 import { movements } from "@/lib/stock-data";
 
-export const Route = createFileRoute("/movimentacoes")({
+export const Route = createFileRoute("/_app/movimentacoes")({
   head: () => ({
     meta: [
       { title: "Movimentações — StockFlow" },

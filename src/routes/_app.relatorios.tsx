@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import { products, weeklyFlow, brl, stockStatus } from "@/lib/stock-data";
 
-export const Route = createFileRoute("/relatorios")({
+export const Route = createFileRoute("/_app/relatorios")({
   head: () => ({
     meta: [
       { title: "Relatórios — StockFlow" },
