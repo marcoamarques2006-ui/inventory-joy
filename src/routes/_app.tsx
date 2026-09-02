@@ -4,3 +4,4 @@ import { AppLayout } from "@/components/app-layout";
 export const Route = createFileRoute("/_app")({
   component: AppLayout,
 });
+// bump
