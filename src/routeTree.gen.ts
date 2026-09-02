@@ -9,50 +9,133 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppMovimentacoesRouteImport } from './routes/_app.movimentacoes'
+import { Route as AppProdutosRouteImport } from './routes/_app.produtos'
+import { Route as AppRelatoriosRouteImport } from './routes/_app.relatorios'
 
-const IndexRoute = IndexRouteImport.update({
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMovimentacoesRoute = AppMovimentacoesRouteImport.update({
+  id: '/movimentacoes',
+  path: '/movimentacoes',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProdutosRoute = AppProdutosRouteImport.update({
+  id: '/produtos',
+  path: '/produtos',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRelatoriosRoute = AppRelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => AppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof AppIndexRoute
+  '/movimentacoes': typeof AppMovimentacoesRoute
+  '/produtos': typeof AppProdutosRoute
+  '/relatorios': typeof AppRelatoriosRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/movimentacoes': typeof AppMovimentacoesRoute
+  '/produtos': typeof AppProdutosRoute
+  '/relatorios': typeof AppRelatoriosRoute
+  '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/_app/movimentacoes': typeof AppMovimentacoesRoute
+  '/_app/produtos': typeof AppProdutosRoute
+  '/_app/relatorios': typeof AppRelatoriosRoute
+  '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/movimentacoes' | '/produtos' | '/relatorios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/movimentacoes' | '/produtos' | '/relatorios' | '/'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/_app/movimentacoes'
+    | '/_app/produtos'
+    | '/_app/relatorios'
+    | '/_app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/': {
+      id: '/_app/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/movimentacoes': {
+      id: '/_app/movimentacoes'
+      path: '/movimentacoes'
+      fullPath: '/movimentacoes'
+      preLoaderRoute: typeof AppMovimentacoesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/produtos': {
+      id: '/_app/produtos'
+      path: '/produtos'
+      fullPath: '/produtos'
+      preLoaderRoute: typeof AppProdutosRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/relatorios': {
+      id: '/_app/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof AppRelatoriosRouteImport
+      parentRoute: typeof AppRoute
     }
   }
 }
 
+interface AppRouteChildren {
+  AppMovimentacoesRoute: typeof AppMovimentacoesRoute
+  AppProdutosRoute: typeof AppProdutosRoute
+  AppRelatoriosRoute: typeof AppRelatoriosRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppMovimentacoesRoute: AppMovimentacoesRoute,
+  AppProdutosRoute: AppProdutosRoute,
+  AppRelatoriosRoute: AppRelatoriosRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
