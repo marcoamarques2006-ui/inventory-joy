@@ -1,6 +1,7 @@
 export type { Product } from "@/domain/product";
 import type { Product } from "@/domain/product";
 
+// Movimentações são usadas pelo dashboard e mantidas separadas do catálogo.
 export type Movement = {
   id: string;
   type: "entrada" | "saida";
@@ -11,6 +12,7 @@ export type Movement = {
   date: string;
 };
 
+// Amostra fixa para representar produtos reais no trabalho acadêmico.
 const seedProducts: Product[] = [
   { id: "1", sku: "ELT-001", name: "Teclado Mecânico TKL", category: "Periféricos", stock: 42, minStock: 15, cost: 189.9, price: 349.9, soldQuantity: 128, supplier: "KeyTech Brasil", updatedAt: "01/09/2026" },
   { id: "2", sku: "ELT-002", name: "Mouse Sem Fio Pro", category: "Periféricos", stock: 8, minStock: 20, cost: 79.9, price: 159.9, soldQuantity: 246, supplier: "KeyTech Brasil", updatedAt: "31/08/2026" },
@@ -37,6 +39,7 @@ const seedProducts: Product[] = [
 const generatedCategories = ["Periféricos", "Monitores", "Áudio", "Componentes", "Acessórios"];
 const generatedSuppliers = ["KeyTech Brasil", "Visualltech", "SoundWave", "DataStore", "ErgoLine"];
 
+// Gera os 130 registros adicionais de forma determinística, totalizando 150 produtos.
 const generatedProducts: Product[] = Array.from({ length: 130 }, (_, index) => {
   const number = index + 21;
   const categoryIndex = index % generatedCategories.length;
@@ -59,6 +62,7 @@ const generatedProducts: Product[] = Array.from({ length: 130 }, (_, index) => {
 
 export const products: Product[] = [...seedProducts, ...generatedProducts];
 
+// Histórico inicial apresentado na tela de movimentações.
 export const movements: Movement[] = [
   { id: "m1", type: "saida", product: "SSD NVMe 1TB", sku: "CMP-101", qty: 4, user: "Marco M.", date: "02/09/2026 14:32" },
   { id: "m2", type: "entrada", product: "Teclado Mecânico TKL", sku: "ELT-001", qty: 20, user: "Ana P.", date: "02/09/2026 11:15" },
@@ -70,6 +74,7 @@ export const movements: Movement[] = [
 ];
 
 const categoryColors = ["#3b5bdb", "#2f9e6e", "#e8a13a", "#e05252", "#9b5de5"];
+// O dashboard calcula os totais a partir do mesmo catálogo usado pela API.
 export const categoryData = generatedCategories.map((name, index) => ({
   name,
   value: products.filter((product) => product.category === name).reduce((total, product) => total + product.stock, 0),
@@ -86,10 +91,12 @@ export const weeklyFlow = [
   { day: "Qua", entradas: 12, saidas: 19 },
 ];
 
+// Formata valores monetários conforme o padrão brasileiro.
 export const brl = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
 export function stockStatus(p: Product): "ok" | "baixo" | "critico" {
+  // O status orienta os filtros e os alertas de reposição da interface.
   if (p.stock < p.minStock * 0.5) return "critico";
   if (p.stock < p.minStock) return "baixo";
   return "ok";

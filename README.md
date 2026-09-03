@@ -12,15 +12,88 @@ Continue developing this project in the [Lovable editor](https://lovable.dev/pro
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.
 - **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
-## Development
+## Execução local
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+O projeto foi configurado para rodar somente na própria máquina, usando o host
+`127.0.0.1` e a porta `8080`. Ele não fica exposto para outros computadores da
+rede.
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+### Pré-requisitos
+
+- Node.js 18 ou superior instalado.
+- Git instalado para clonar o projeto.
+
+O professor não precisa instalar Bun, banco de dados ou qualquer ferramenta adicional.
+O projeto usa apenas Node.js e npm, que já acompanham a instalação do Node.js.
+
+### Como o professor pode executar
+
+Se o repositório estiver público no GitHub, o professor pode executar exatamente:
+
+```powershell
+git clone https://github.com/marcoamarques2006-ui/inventory-joy.git
+cd inventory-joy
+npm install
 npm run dev
+```
+
+Depois, basta abrir `http://127.0.0.1:8080/` no navegador. O servidor fica
+disponível apenas na máquina que executou o comando.
+
+O repositório não precisa de colaboradores. Se ele estiver privado, envie ao
+professor um arquivo `.zip` do projeto ou torne o repositório público; não é
+necessário alterar permissões ou adicionar usuários.
+
+### Passo a passo
+
+1. Abra o PowerShell ou o terminal do VS Code.
+2. Clone o repositório e entre na pasta:
+
+```powershell
+git clone https://github.com/marcoamarques2006-ui/inventory-joy.git
+cd inventory-joy
+```
+
+3. Instale as dependências:
+
+```powershell
+npm install
+```
+
+4. Inicie o servidor local:
+
+```powershell
+npm run dev
+```
+
+5. Abra o sistema no navegador:
+
+```text
+http://127.0.0.1:8080/
+```
+
+6. Para testar o backend, acesse a API:
+
+```text
+http://127.0.0.1:8080/api/products
+```
+
+Exemplos de consultas:
+
+```text
+http://127.0.0.1:8080/api/products?name=monitor
+http://127.0.0.1:8080/api/products?code=CMP-101
+http://127.0.0.1:8080/api/products?sort=soldQuantity&order=desc
+```
+
+Para parar o servidor, volte ao terminal e pressione `Ctrl + C`.
+
+### Verificação do projeto
+
+Para gerar o build de produção localmente:
+
+```powershell
+npm run build
 ```
 
 ## Backend de produtos

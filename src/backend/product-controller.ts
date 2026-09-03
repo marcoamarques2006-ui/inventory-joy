@@ -5,6 +5,7 @@ import { ProductService } from "./product-service";
 const productService = new ProductService(new InMemoryProductRepository());
 
 function parseQuery(url: URL): ProductQuery {
+  // Converte parâmetros externos para os valores aceitos pelo domínio.
   const sort = url.searchParams.get("sort");
   const order = url.searchParams.get("order");
 
@@ -17,6 +18,7 @@ function parseQuery(url: URL): ProductQuery {
 }
 
 export async function handleProductRequest(request: Request): Promise<Response | undefined> {
+  // O controller traduz HTTP; as regras continuam concentradas no ProductService.
   const url = new URL(request.url);
   const pathParts = url.pathname.split("/").filter(Boolean);
   if (pathParts[0] !== "api" || pathParts[1] !== "products") return undefined;

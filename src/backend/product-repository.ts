@@ -9,6 +9,7 @@ export interface ProductRepository {
 }
 
 export class InMemoryProductRepository implements ProductRepository {
+  // Esta implementação facilita o trabalho local; um banco pode substituir a classe sem mudar o serviço.
   private readonly items: Product[] = [...products];
 
   findAll(): Product[] {

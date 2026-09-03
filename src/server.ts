@@ -8,6 +8,7 @@ type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
 };
 
+// Carrega o servidor do framework somente quando a rota não é da API de produtos.
 let serverEntryPromise: Promise<ServerEntry> | undefined;
 
 async function getServerEntry(): Promise<ServerEntry> {
@@ -22,6 +23,7 @@ async function getServerEntry(): Promise<ServerEntry> {
 // h3 swallows in-handler throws into a normal 500 Response with body
 // {"unhandled":true,"message":"HTTPError"} — try/catch alone never fires for those.
 async function normalizeCatastrophicSsrResponse(response: Response): Promise<Response> {
+  // Converte erros internos que o h3 escondeu em uma página SSR compreensível.
   if (response.status < 500) return response;
   const contentType = response.headers.get("content-type") ?? "";
   if (!contentType.includes("application/json")) return response;
@@ -37,6 +39,7 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 }
 
 function isH3SwallowedErrorBody(body: string): boolean {
+  // Identifica o formato específico de erro produzido pelo runtime h3.
   try {
     const payload = JSON.parse(body) as { unhandled?: unknown; message?: unknown };
     return payload.unhandled === true && payload.message === "HTTPError";
@@ -48,6 +51,7 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      // A API própria é resolvida antes do fallback de páginas do TanStack Start.
       const productResponse = await handleProductRequest(request);
       if (productResponse) return productResponse;
       const handler = await getServerEntry();

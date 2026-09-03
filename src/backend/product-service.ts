@@ -6,6 +6,7 @@ export class ProductService {
   constructor(private readonly repository: ProductRepository) {}
 
   search(query: ProductQuery): ProductSearchResult {
+    // O serviço coordena busca, ordenação e métricas sem conhecer detalhes HTTP.
     const startedAt = performance.now();
     const allProducts = this.repository.findAll();
     let result = query.code ? binarySearchByCode(allProducts, query.code) : allProducts;
@@ -31,6 +32,7 @@ export class ProductService {
   }
 
   create(input: ProductInput): Product {
+    // SKU é a identidade funcional do produto e não pode se repetir.
     this.validate(input);
     if (this.repository.findAll().some((product) => product.sku.toLowerCase() === input.sku.toLowerCase())) {
       throw new Error("Já existe um produto com este código.");
@@ -53,6 +55,7 @@ export class ProductService {
   }
 
   private validate(input: ProductInput): void {
+    // A validação fica centralizada para ser reutilizada por POST e PUT.
     if (!input.sku.trim() || !input.name.trim() || !input.category.trim()) throw new Error("Código, nome e categoria são obrigatórios.");
     if (input.price < 0 || input.cost < 0 || input.stock < 0 || input.minStock < 0 || input.soldQuantity < 0) throw new Error("Valores numéricos não podem ser negativos.");
   }
