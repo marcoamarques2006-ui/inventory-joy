@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Download, TrendingUp, TriangleAlert, DollarSign } from "lucide-react";
+import { Download, TrendingUp, TriangleAlert, DollarSign, Search, ArrowDownUp } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -27,6 +27,8 @@ const marginData = [...products]
   .map((p) => ({ name: p.name.length > 18 ? p.name.slice(0, 18) + "…" : p.name, margem: Math.round(((p.price - p.cost) / p.price) * 100) }))
   .sort((a, b) => b.margem - a.margem)
   .slice(0, 7);
+
+const topSelling = [...products].sort((a, b) => b.soldQuantity - a.soldQuantity).slice(0, 5);
 
 function Relatorios() {
   const stockValue = products.reduce((s, p) => s + p.stock * p.cost, 0);
@@ -95,6 +97,47 @@ function Relatorios() {
                 <Bar dataKey="saidas" fill="var(--color-chart-4)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-4 xl:grid-cols-3">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-xs xl:col-span-2">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="font-semibold tracking-tight">Produtos mais vendidos</h2>
+              <p className="text-xs text-muted-foreground">Ranking por quantidade vendida</p>
+            </div>
+            <TrendingUp className="h-5 w-5 text-success" />
+          </div>
+          <div className="mt-4 space-y-3">
+            {topSelling.map((product, index) => (
+              <div key={product.id} className="flex items-center gap-3">
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-muted text-xs font-bold text-muted-foreground">{index + 1}</span>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium">{product.name}</p>
+                  <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-muted">
+                    <div className="h-full rounded-full bg-success" style={{ width: `${(product.soldQuantity / topSelling[0].soldQuantity) * 100}%` }} />
+                  </div>
+                </div>
+                <span className="text-sm font-semibold tabular-nums">{product.soldQuantity} un.</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-border bg-card p-5 shadow-xs">
+          <h2 className="font-semibold tracking-tight">Análise dos algoritmos</h2>
+          <p className="text-xs text-muted-foreground">Critérios usados no backend</p>
+          <div className="mt-4 space-y-3">
+            <div className="rounded-lg bg-primary/5 p-3">
+              <div className="flex items-center gap-2 text-sm font-semibold"><ArrowDownUp className="h-4 w-4 text-primary" /> QuickSort</div>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Ordena por nome, preço ou vendas. Complexidade média O(n log n).</p>
+            </div>
+            <div className="rounded-lg bg-success/5 p-3">
+              <div className="flex items-center gap-2 text-sm font-semibold"><Search className="h-4 w-4 text-success" /> Busca binária</div>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Localiza códigos em O(log n) após ordenar a coleção por SKU.</p>
+            </div>
           </div>
         </div>
       </div>

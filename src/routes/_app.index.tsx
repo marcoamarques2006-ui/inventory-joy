@@ -4,6 +4,7 @@ import {
   TriangleAlert,
   ArrowDownToLine,
   ArrowUpFromLine,
+  ArrowLeftRight,
   TrendingUp,
   ArrowRight,
 } from "lucide-react";
@@ -44,11 +45,20 @@ const kpis = [
   { label: "Itens em estoque", value: totalItems.toString(), sub: `${products.length} produtos ativos`, icon: Package, tone: "text-primary bg-primary/10" },
   { label: "Valor do estoque", value: brl(stockValue), sub: "+8,2% vs. mês anterior", icon: TrendingUp, tone: "text-success bg-success/10" },
   { label: "Alertas de reposição", value: lowStock.length.toString(), sub: "abaixo do estoque mínimo", icon: TriangleAlert, tone: "text-warning-foreground bg-warning/15" },
-  { label: "Giro da semana", value: `${entradasHoje + saidasHoje}`, sub: `${entradasHoje} entradas · ${saidasHoje} saídas`, icon: ArrowLeftRightIcon, tone: "text-primary bg-primary/10" },
+  { label: "Giro da semana", value: `${entradasHoje + saidasHoje}`, sub: `${entradasHoje} entradas · ${saidasHoje} saídas`, icon: ArrowLeftRight, tone: "text-primary bg-primary/10" },
 ];
 
-function ArrowLeftRightIcon(props: React.ComponentProps<typeof ArrowDownToLine>) {
-  return <ArrowUpFromLine {...props} className="hidden" />; // placeholder, replaced below
+function Donut() {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <PieChart>
+        <Pie data={categoryData} dataKey="value" nameKey="name" innerRadius={62} outerRadius={84} paddingAngle={3} strokeWidth={0}>
+          {categoryData.map((category) => <Cell key={category.name} fill={category.color} />)}
+        </Pie>
+        <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid var(--color-border)", background: "var(--color-card)" }} />
+      </PieChart>
+    </ResponsiveContainer>
+  );
 }
 
 function Dashboard() {
